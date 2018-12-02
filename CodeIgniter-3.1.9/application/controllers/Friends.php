@@ -27,7 +27,7 @@ class Friends extends CI_Controller
 		$post=array(
 		'post_title'=>$this->input->post('title'),
 		'post'=>$this->input->post('posty'),
-/*@*/			'user_id'=>1   // we need here the user id 
+/*@*/			'user_id'=>2   // we need here the user id 
 		);                         
     $this->Friend_model->add_post($post);
     redirect('friends/all_posts');
@@ -37,9 +37,8 @@ class Friends extends CI_Controller
   public function all_posts()
   {
 
-    $all_data_p['all_post']=$this->Friend_model->get_all_post();
+    $all_data_p['all_post']=$this->Friend_model->get_all_posts();
     $this->load->view('challenge', $all_data_p );
-    //redirect('friends/all_comments');
   }
 
   public function add_comm()
@@ -81,6 +80,20 @@ class Friends extends CI_Controller
     $all_data_c['all_comm']=$this->Friend_model->get_all_comm($p_id);
     $this->load->view('comments', $all_data_c);
   }
+
+  public function delete_comm()
+        {
+          $comm_id=$this->input->post('comm_id');
+          $this->Friend_model->delete_comm($comm_id);
+          redirect('friends/all_comm');
+        }
+
+  public function delete_post()
+        {
+          $post_id=$this->input->post('post_id');
+          $this->Friend_model->delete_post($post_id);
+          redirect('friends/all_posts');
+        }
 
 
 
