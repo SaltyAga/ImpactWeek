@@ -2,9 +2,9 @@ body {
     margin: 0;
     padding: 0;
     background-image: url("/assets/logos/header.jpg");
-    background-color: #85b3b8;
+    height: 40vh;
+    width: 100%;
     background-position: center;
-    height: 300px;
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
@@ -12,5 +12,7 @@ body {
 
 #navbar li a{
     color: white;
+    font-family: 'Open Sans', sans-serif;
 }
+
 
