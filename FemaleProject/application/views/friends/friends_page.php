@@ -1,20 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Female Friends</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" type="text/css" href="<? echo base_url('assets/css/style.css');?>" />
-</head>
-<body>
+
 	<div class="container">
-		<div class="row">
-			<a href='profile'>My profile</a>
+		<div class="post-container row">
 		</div>
-		<a href="logout">Logout</a>
-		<div class="row">
 			<?php 
 				foreach($users as $row) {
 				echo
@@ -35,15 +22,14 @@
 				";
 			}
 			?>
-		</div>
-
-
-
-
-
-
-
-	</div><!-- end of container div -->
+		
+	</div>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-</body>
-</html>
+
+
+
+
+
+
+
+	

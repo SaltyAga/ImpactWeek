@@ -96,7 +96,7 @@ class Friend extends CI_Model {
 	}
 	public function friend_profile()
 	{	
-		$query = "SELECT * FROM users WHERE user_id=?";
+		$query = "SELECT * FROM users LEFT JOIN cities ON users.city_id=cities.city_id LEFT JOIN industries ON users.industry_id=industries.industry_id WHERE user_id=?";
 		$values = [$this->session->userdata('profile_id')];
 		return $this->db->query($query, $values)->row_array();
 	}
@@ -114,14 +114,104 @@ class Friend extends CI_Model {
 		$values = [$this->session->userdata('id')];
 		return $this->db->query($query, $values)->result_array();
 	}
+	public function get_request_recieved()
+	{	
+		$query = "SELECT * FROM users JOIN requests ON 
+		users.user_id = requests.from_user WHERE requests.to_user=?";
+		$values = [$this->session->userdata('id')];
+		return $this->db->query($query, $values)->result_array();
+	}
+	public function get_request_sent()
+	{	
+		$query = "SELECT * FROM users JOIN requests ON 
+		users.user_id = requests.to_user WHERE requests.from_user=?";
+		$values = [$this->session->userdata('id')];
+		return $this->db->query($query, $values)->result_array();
+	}
+	public function add_friend($post)
+	{	
+		
+		$query ="SELECT from_user FROM requests WHERE requests_id=?";
+		$values = [$post['requests_id']];
+		$from_user = $this->db->query($query, $values)->row_array();
+
+		$query = "INSERT INTO friends (user_id, friend_id) VALUES (?, ?)";
+		
+		$values = [$this->session->userdata('id'), $from_user['from_user']];
+		$this->db->query($query, $values);
+
+		$query = "INSERT INTO friends (friend_id, user_id) VALUES (?, ?)";
+		$values = [$this->session->userdata('id'), $from_user['from_user']];
+		$this->db->query($query, $values);
+
+		$this->db->where('requests_id', $post['requests_id']);
+		$this->db->delete('requests');
+	}
 
 	public function get_profile()
 	{	
-		$query = "SELECT * FROM users WHERE user_id=?";
+		$query = "SELECT * FROM users LEFT JOIN cities ON users.city_id=cities.city_id LEFT JOIN industries ON users.industry_id=industries.industry_id WHERE user_id=?";
 		$values = [$this->session->userdata('id')];
 		return $this->db->query($query, $values)->row_array();
 	}
 
+	public function get_industries()
+	{	
+		$query = "SELECT * FROM industries ORDER BY industry ASC";
+		return $this->db->query($query)->result_array();
+	}
+
+	public function get_cities()
+	{	
+		$query = "SELECT * FROM cities ORDER BY city_name ASC";
+		return $this->db->query($query)->result_array();
+	}
+
+	public function validate_update($post)
+	{
+		$this->form_validation->set_data($post);
+		
+		//----------------first name validation-------
+		$this->form_validation->set_rules('first_name', $post['first_name'], 'alpha', 
+			array('alpha'=>'No numbers please!'));
+		//----------------last name validation-------
+		$this->form_validation->set_rules('last_name', $post['last_name'], 'alpha', 
+			array('alpha'=>'No numbers please!'));
+		//----------------phone number validation-------
+		$this->form_validation->set_rules('phone_number', $post['phone_number'], 'numeric', 
+			array('numeric'=>'Use only numbers, please'));
+		//----------------linkedin validation-------
+		$this->form_validation->set_rules('linkedin', $post['linkedin'], 'valid_url', 
+			array('valid_url'=>'Please enter valid url'));
+		if ($this->form_validation->run())
+		{
+			return "valid";
+		}
+	}
+
+	public function update_user($post)
+	{
+		$data = array(
+			'first_name' => $post['first_name'],
+			'last_name' => $post['last_name'],
+			'city_id' => $post['city_id'],
+			'phone_number' => $post['phone_number'],
+			'birth_date' => $post['birth_date'],
+			'linkedin' => $post['linkedin'],
+			'biography' => $post['biography'],
+			'student_professional' => $post['student_professional'],
+			'work_place' => $post['work_place'],
+			'expertise' => $post['expertise'],
+			'experience' => $post['experience'],
+			'industry_id' => $post['industry_id'],
+			'support_for' => $post['support_for'],
+			'support' => $post['support'],
+			'mentor_mentee' => $post['mentor_mentee'],
+			'recruitment_no_yes' => $post['recruitment_no_yes']
+		);
+		$this->db->where('user_id', $this->session->userdata('id'));
+		$this->db->update('users', $data);
+	}
 
 	public function add_post($post)
 	{

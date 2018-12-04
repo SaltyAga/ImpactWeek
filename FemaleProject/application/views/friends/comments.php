@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title></title>
-</head>
-<body>
+<div class="container">
+  <div class="post-container">
   <a href="<?php echo base_url('friends/all_posts'); ?>"><button>Back</button></a>
-  <hr>
+  </div>
   <?php
       $user_id=$this->session->userdata('id');
 /*@*/ $user_admin=$this->session->userdata('admin');
@@ -34,8 +30,7 @@
     <input type="hidden" name="user_id" value="<?php echo $user_id;  ?>">
     <input type="submit" value=" Add ">
   </form>
-</body>
-</html>
+</div>
 
 
 

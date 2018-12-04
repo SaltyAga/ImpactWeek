@@ -1,24 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Female Friends</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" type="text/css" href="<? echo base_url('assets/css/style.css');?>" />
-</head>
-<body>
+
 	<div class="container">
-		<div class="row">
-			<p>Test info here</p>
-		</div>
-		<div class="row">
-			<a href='profile'>About</a>
-			<a href='my_friends'>Friends</a>
-		</div>
+	<div class="post-container">
+		<a href='profile'>About</a>
+		<a href='my_friends'>Friends</a>
+		<a href='edit_profile'>Edit Profile</a>
+	</div>
 		<?php 
-			echo "<p>First Name</p>
+			echo 
+			"<div>
+			<img src='" . $profile['picture_url'] ."' alt='profile_pic'>" . " " . $profile['first_name']
+			. " " . $profile['last_name'] . " </div>
+			<p>First Name</p>
 			<p>" . $profile['first_name'] ."
 			</p>
 			<hr>
@@ -26,25 +18,48 @@
 			<p>" . $profile['last_name'] ."
 			</p>
 			<hr>";
-			if($profile['city_id'] !== NULL) {
+			if($profile['city_name'] != NULL) {
 				echo "<p>City</p>
-				<p>" . $profile['city_id'] ."
+				<p>" . $profile['city_name'] ."
 				</p>
 				<hr>";
 			};
-			if($profile['linkedin'] !== NULL) {
+			if($profile['phone_number'] != NULL) {
+				echo "<p>Phone Number</p>
+				<p>" . $profile['phone_number'] ."
+				</p>
+				<hr>";
+			};
+			if($profile['birth_date'] != NULL && $profile['birth_date'] != 0) {
+				echo "<p>Date of Birth</p>
+				<p>" . $profile['birth_date'] ."
+				</p>
+				<hr>";
+			};
+			if($profile['linkedin'] != NULL) {
 				echo "<p>LinkedIn Profile</p>
 				<a href='" . $profile['city_id'] ."'>
 				</a>
 				<hr>";
 			};
-			if($profile['biography'] !== NULL) {
+			if($profile['biography'] != NULL) {
 				echo "<p>Biography</p>
 				<p>" . $profile['biography'] ."
 				</p>
 				<hr>";
 			};
-			if($profile['work_place'] !== NULL) {
+			if($profile['student_professional'] != NULL) {
+				if($profile['student_professional'] == 0) {
+					echo "
+					<p>Student</p>
+					<hr>";
+				} else {
+					echo "
+					<p>Professional</p>
+					<hr>";
+				}
+			};
+			if($profile['work_place'] != NULL) {
 				if($profile['student_professional'] == 0) {
 					echo "<p>University</p>
 					<p>" . $profile['work_place'] ."
@@ -57,31 +72,37 @@
 					<hr>";
 				}
 			};
-			if($profile['expertise'] !== NULL) {
+			if($profile['expertise'] != NULL) {
 				echo "<p>Expertise</p>
 				<p>" . $profile['expertise'] ."
 				</p>
 				<hr>";
 			};
-			if($profile['experience'] !== NULL) {
+			if($profile['experience'] != NULL) {
 				echo "<p>Experience</p>
 				<p>" . $profile['experience'] ."
 				</p>
 				<hr>";
 			};
-			if($profile['support_for'] !== NULL) {
+			if($profile['industry'] != NULL) {
+				echo "<p>Industry</p>
+				<p>" . $profile['industry'] ."
+				</p>
+				<hr>";
+			};
+			if($profile['support_for'] != NULL) {
 				echo "<p>What kind of support are you looking for?</p>
 				<p>" . $profile['support_for'] ."
 				</p>
 				<hr>";
 			};
-			if($profile['support'] !== NULL) {
+			if($profile['support'] != NULL) {
 				echo "<p>What kind of support can you give?</p>
 				<p>" . $profile['support'] ."
 				</p>
 				<hr>";
 			};
-			if($profile['mentor_mentee'] !== NULL) {
+			if($profile['mentor_mentee'] != NULL) {
 				if($profile['mentor_mentee'] == 0) {
 					echo "
 					<p>Role</p>
@@ -94,7 +115,7 @@
 					<hr>";
 				}
 			};
-			if($profile['recruitment_no_yes'] !== NULL) {
+			if($profile['recruitment_no_yes'] != NULL) {
 				if($profile['recruitment_no_yes'] == 0) {
 					echo "
 					<p>Recruitment</p>
@@ -110,5 +131,3 @@
 		?>
 	</div>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-</body>
-</html>
