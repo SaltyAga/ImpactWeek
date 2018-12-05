@@ -71,6 +71,49 @@ class Friend extends CI_Model {
 		}
 	}
 
+	public function get_all_emails_normal()
+  	{
+	    return $this->db->query("
+	    SELECT
+	    users.user_id,
+	    users.user_admin,
+	    users.first_name,
+	    users.email
+	    from users
+	    WHERE user_admin=0
+	    ORDER BY email DESC 
+	    ")->result_array();
+  	}
+  	public function get_all_emails_admin()
+  	{
+	    return $this->db->query("
+	    SELECT
+	    users.user_id,
+	    users.user_admin,
+	    users.first_name,
+	    users.email
+	    from users
+	    WHERE user_admin=1
+	    ORDER BY email DESC 
+	    ")->result_array();
+  	}
+  	public function make_admin($id)
+  	{
+  		$this->db->query("
+            UPDATE users
+            SET users.user_admin = 1 
+            WHERE user_id = $id ;
+      ");
+  	}
+  	public function remove_admin($id)
+  	{
+  		$this->db->query("
+            UPDATE users
+            SET users.user_admin = 0 
+            WHERE user_id = $id ;
+      ");
+  	}
+
 	//-------------insert user------------------
 		public function insert_user($post)
 	{
@@ -84,9 +127,41 @@ class Friend extends CI_Model {
 
 	public function get_all_users()
 	{	
-		return $this->db->query("SELECT * FROM users")->
-		result_array();
+		$this->db->select('*');
+		$this->db->from('users');
+		$this->db->where('email!=', 'admin@example.com');
+		$this->db->order_by("user_id", "desc");
+		return $this->db->get()->result_array();
 	}
+	public function get_users($post)
+	{	
+		$this->db->select('*');
+		$this->db->from('users');
+		$this->db->where('email!=', 'admin@example.com');
+		if ($post['first_name'] != '')
+		{
+			$this->db->where('first_name', $post['first_name']);
+		}
+		if ($post['last_name'] !== '')
+		{
+			$this->db->where('last_name', $post['last_name']);
+		}
+		if ($post['city_id'] !== '5')
+		{
+			$this->db->where('city_id', $post['city_id']);
+		}
+		if ($post['industry_id'] !== '25')
+		{
+			$this->db->where('industry_id', $post['industry_id']);
+		}
+		if (isset($post['mentor_mentee']))
+		{
+			$this->db->where('mentor_mentee', $post['mentor_mentee']);
+		}
+		$this->db->order_by("user_id", "desc");
+		return $this->db->get()->result_array();
+	}
+
 
 		public function friend_request($post)
 	{	
@@ -102,9 +177,21 @@ class Friend extends CI_Model {
 	}
 	public function get_friends()
 	{	
-		$query = "SELECT * FROM users JOIN friends ON 
-		users.user_id = friends.friend_id WHERE friends.user_id=?";
-		$values = [$this->session->userdata('profile_id')];
+		$query = "SELECT * FROM friends WHERE friends.user_id=?";
+		$values = [$this->session->userdata('id')];
+		return $this->db->query($query, $values)->result_array();
+	}
+	
+	public function get_req_sent()
+	{	
+		$query = "SELECT * FROM requests WHERE requests.from_user=?";
+		$values = [$this->session->userdata('id')];
+		return $this->db->query($query, $values)->result_array();
+	}
+	public function get_req_rec()
+	{	
+		$query = "SELECT * FROM requests WHERE requests.to_user=?";
+		$values = [$this->session->userdata('id')];
 		return $this->db->query($query, $values)->result_array();
 	}
 	public function get_my_friends()
@@ -114,7 +201,22 @@ class Friend extends CI_Model {
 		$values = [$this->session->userdata('id')];
 		return $this->db->query($query, $values)->result_array();
 	}
-	public function get_request_recieved()
+	public function get_us_friends()
+	{	
+		$query = "SELECT * FROM users JOIN friends ON 
+		users.user_id = friends.friend_id WHERE friends.user_id=?";
+		$values = [$this->session->userdata('profile_id')];
+		return $this->db->query($query, $values)->result_array();
+	}
+	public function get_us_friends_id()
+	{	
+		$query = "SELECT * FROM users JOIN friends ON 
+		users.user_id = friends.friend_id WHERE friends.user_id=?";
+		$values = $this->session->set_userdata('friend_id');
+		$this->session->userdata('friend_id');
+		return $this->db->query($query, $values)->result_array();
+	}
+	public function get_request_received()
 	{	
 		$query = "SELECT * FROM users JOIN requests ON 
 		users.user_id = requests.from_user WHERE requests.to_user=?";
@@ -225,11 +327,51 @@ class Friend extends CI_Model {
 
   	public function get_all_posts()
   	{
+  		if($this->session->userdata('id') !== NULL)
+  		{
+		    return $this->db->query("
+		    SELECT
+		    users.user_id,
+		    users.user_admin,
+		    users.first_name,
+		    posts.post_id ,
+		    posts.post_title,
+		    posts.post,
+		    posts.created_at AS pos_time ,
+		    posts.updated_at AS pos_up_time
+		    from users
+		    join posts
+		    on users.user_id = posts.user_id
+		    ORDER BY pos_time DESC 
+		    ")->result_array();
+		} else {
+			return $this->db->query("
+		    SELECT
+		    users.user_id,
+		    users.user_admin,
+		    users.first_name,
+		    posts.post_id ,
+		    posts.post_title,
+		    posts.post,
+		    posts.created_at AS pos_time ,
+		    posts.updated_at AS pos_up_time
+		    from users
+		    join posts
+		    on users.user_id = posts.user_id
+		    WHERE public_private = 0
+		    ORDER BY pos_time DESC 
+		    ")->result_array();
+		}
+  	}
+
+  	public function get_post($p_id)
+  	{
 	    return $this->db->query("
 	    SELECT
 	    users.user_id,
 	    users.user_admin,
 	    users.first_name,
+	    users.last_name,
 	    posts.post_id ,
 	    posts.post_title,
 	    posts.post,
@@ -238,8 +380,8 @@ class Friend extends CI_Model {
 	    from users
 	    join posts
 	    on users.user_id = posts.user_id
-	    ORDER BY pos_time DESC 
-	    ")->result_array();
+	    WHERE posts.post_id = $p_id
+	    ")->row_array();
   	}
 
   	public function get_all_comm($p_id)
@@ -258,7 +400,7 @@ class Friend extends CI_Model {
 	    join posts on comments.post_id = posts.post_id
 	    join users on comments.user_id = users.user_id
 	    WHERE posts.post_id = $p_id
-	    ORDER BY comm_time DESC ;
+	    ORDER BY comm_time ASC ;
 	    ")->result_array();
   	}
   
@@ -275,5 +417,32 @@ class Friend extends CI_Model {
         DELETE from posts
         WHERE post_id = $id ;
     	");
-  }
+  	}
+  	public function add_event($event)
+  	{
+ 		$this->db->insert('events', $event);
+  	}
+   	public function get_all_events()
+  	{
+	    return $this->db->query("
+	    SELECT
+	    event_id,
+	    event_title,
+	    event_description,
+	    event_location,
+	    event_datetime,
+	    event_price
+	    from events
+	    ORDER BY created_at DESC 
+	    ")->result_array();
+  	}
+   	public function get_the_events($id)
+  	{
+	    return $this->db->query("
+	    SELECT
+	    *
+	    from events
+	    WHERE event_id = $id
+	    ")->result_array();
+  	}
 }

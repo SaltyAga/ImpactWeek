@@ -47,7 +47,6 @@
         <div class="row">
             <?php 
                 foreach($users as $row) {
-
                 echo
                 "
                     <div class='col-12 col-md-4'>
@@ -57,7 +56,7 @@
                             </div>
                             <div class='panel-body'>
                                 <p>" . $row['first_name'] . " " . $row['last_name'] . "</p>
-                                
+                                <p><a href='show_friends_id/".$row['user_id'] . "'>" . $row['first_name'] . "'s friends</a></p>
                             </div>
                             <div class='panel-footer'>";
                              

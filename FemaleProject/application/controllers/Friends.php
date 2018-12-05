@@ -34,7 +34,6 @@ class Friends extends CI_Controller {
 	public function login()
 	{
         $post = $this->input->post(NULL, true);
-		$this->load->model('Friend');
 		$result = $this->Friend->validate_login($post);
 		if ($result == 'valid') {
 			redirect('all_posts');
@@ -42,6 +41,44 @@ class Friends extends CI_Controller {
 			$this->load->view('friends/index');
 		}
 	}
+
+	public function admin()
+	{
+		$this->load->view('friends/login_admin');
+	}
+
+	public function login_admin()
+	{
+        $post = $this->input->post(NULL, true);
+		$result = $this->Friend->validate_login($post);
+		$email_admin=$this->input->post('email_log');
+		if (($result == 'valid')&&($email_admin=="admin@example.com")) {
+			redirect('all_emails');
+		} else {
+			$this->load->view('friends/login_admin');
+		}
+	}
+	public function make_admin()
+  	{
+  		$nor_email=$this->input->post('nor_email');
+  		$this->Friend->make_admin($nor_email);
+  		redirect('all_emails');
+  	}
+  	public function remove_admin()
+  	{
+  		$adm_email=$this->input->post('adm_email');
+  		$this->Friend->remove_admin($adm_email);
+  		redirect('all_emails');
+  	}
+  	public function all_emails()
+  	{
+	    $all_data_e['all_emails_normal']=$this->Friend->get_all_emails_normal();
+	    $all_data_e['all_emails_admin']=$this->Friend->get_all_emails_admin();
+	    $this->load->view('friends/admin_page', $all_data_e );
+  	}
+
+
+
 	public function logout()
 	{
 		$this->session->sess_destroy();
@@ -51,14 +88,31 @@ class Friends extends CI_Controller {
 
 	public function members()
 		{
-	        $this->load->model('Friend');
 	        $users = $this->Friend->get_all_users();
+	        $industries = $this->Friend->get_industries();
+		    $cities = $this->Friend->get_cities();
+		    $requests_sent = $this->Friend->get_req_sent();
+		    $requests_rec = $this->Friend->get_req_rec();
+		    $friends = $this->Friend->get_friends();
 	        $this->load->view('friends/partials/header');
-	        $this->load->view('friends/friends_page', ['users' => $users]);
+	        $this->load->view('friends/friends_page', ['users' => $users, 'industries' => $industries, 'cities' => $cities, 'requests_sent' => $requests_sent, 'requests_rec' => $requests_rec, 'friends' => $friends]);
 	        $this->load->view('friends/partials/footer');
 		}
-
-			public function friend_request()
+	public function members_search()
+	{
+		$post = $this->input->post(NULL, true);
+        $users = $this->Friend->get_users($post);
+        $industries = $this->Friend->get_industries();
+	    $cities = $this->Friend->get_cities();
+	    $requests_sent = $this->Friend->get_req_sent();
+		    $requests_rec = $this->Friend->get_req_rec();
+		    $friends = $this->Friend->get_friends();
+        $this->load->view('friends/partials/header');
+        $this->load->view('friends/friends_page', ['users' => $users, 'industries' => $industries, 'cities' => $cities, 'requests_sent' => $requests_sent, 'requests_rec' => $requests_rec, 'friends' => $friends]);
+        $this->load->view('friends/partials/footer');
+	}
+	
+		public function friend_request()
 		{
 	        $post = $this->input->post(NULL, true);
 	        $this->Friend->friend_request($post);
@@ -79,10 +133,28 @@ class Friends extends CI_Controller {
 		}
 		public function show_friends()
 		{
-			$this->load->model('Friend');
-		    $friends = $this->Friend->get_friends();
+		    $friends = $this->Friend->get_us_friends();
+		    $profile = $this->Friend->friend_profile();
 		    $this->load->view('friends/partials/header');
-		    $this->load->view('friends/friends', ['friends' => $friends]);
+		    $this->load->view('friends/friends', ['friends' => $friends, 'profile' => $profile]);
+		    $this->load->view('friends/partials/footer');
+		}
+		// public function show_friends_id($id)
+		// {
+		// 	$this->load->model('Friend');
+		//     $friends = $this->Friend->get_us_friends_id($id);
+		//     $profile = $this->Friend->friend_profile();
+		//     $this->load->view('friends/partials/header');
+		//     $this->load->view('friends/friends', ['friends' => $friends, 'profile' => $profile]);
+		//     $this->load->view('friends/partials/footer');
+		// }
+		public function show_friends_id()
+		{
+			$this->load->model('Friend');
+		    $friends = $this->Friend->get_us_friends_id();
+		    $profile = $this->Friend->friend_profile();
+		    $this->load->view('friends/partials/header');
+		    $this->load->view('friends/friends', ['friends' => $friends, 'profile' => $profile]);
 		    $this->load->view('friends/partials/footer');
 		}
 		public function profile()
@@ -118,31 +190,19 @@ class Friends extends CI_Controller {
 		}
 		public function my_friends()
 		{
-			$this->load->model('Friend');
+		    $profile = $this->Friend->get_profile();
 		    $friends = $this->Friend->get_my_friends();
+		    $requests_sent = $this->Friend->get_request_sent();
+		    $requests_received = $this->Friend->get_request_received();
 		    $this->load->view('friends/partials/header');
-		    $this->load->view('friends/myfriends', ['friends' => $friends]);
-		    $this->load->view('friends/partials/footer');
-		}
-		public function friend_request_recieved()
-		{
-		    $requests = $this->Friend->get_request_recieved();
-		    $this->load->view('friends/partials/header');
-		    $this->load->view('friends/friend_request_recieved', ['requests' => $requests]);
-		    $this->load->view('friends/partials/footer');
-		}
-		public function friend_request_sent()
-		{
-		    $requests = $this->Friend->get_request_sent();
-		    $this->load->view('friends/partials/header');
-		    $this->load->view('friends/friend_request_sent', ['requests' => $requests]);
+		    $this->load->view('friends/myfriends', ['friends' => $friends, 'requests_received' => $requests_received, 'requests_sent' => $requests_sent, 'profile' => $profile]);
 		    $this->load->view('friends/partials/footer');
 		}
 		public function add_friend()
 		{
 	        $post = $this->input->post(NULL, true);
 	        $this->Friend->add_friend($post);
-	        redirect('friend_request_recieved');
+	        redirect('my_friends');
 		}
 
 
@@ -151,17 +211,19 @@ class Friends extends CI_Controller {
   		$this->form_validation->set_rules('posty','post','required');
   		if ($this->form_validation->run() == FALSE)
       	{
-			redirect('all_posts');
+			redirect('/all_posts');
       	}
       	else
       	{
 			$post=array(
 			'post_title'=>$this->input->post('title'),
 			'post'=>$this->input->post('posty'),
-/*@*/		'user_id'=>$this->session->userdata('id')   // we need here the user id 
+/*@*/		'user_id'=>$this->session->userdata('id'),
+			'public_private'=>$this->input->post('public_private')
+   // we need here the user id 
 		);                         
 	    $this->Friend->add_post($post);
-	    redirect('all_posts');
+	    redirect('/all_posts');
 	    }
 	}
 
@@ -209,7 +271,7 @@ class Friends extends CI_Controller {
         	$this->session->set_userdata('post_main',$post_main);
       	}
     	$all_data_c['all_comm']=$this->Friend->get_all_comm($p_id);
-    	$post_data = $this->Friend->get_all_comm($p_id);
+    	$all_data_c['post'] = $this->Friend->get_post($p_id);
     	$this->load->view('friends/partials/header');
     	$this->load->view('friends/comments', $all_data_c);
     	$this->load->view('friends/partials/footer');
@@ -228,6 +290,36 @@ class Friends extends CI_Controller {
           	$this->Friend->delete_post($post_id);
           	redirect('all_posts');
         }
-
+    	public function add_event()
+	{
+	    $this->form_validation->set_rules('event','Event','required'); 
+	    if ($this->form_validation->run() == FALSE)
+    	{
+      		redirect('all_emails');
+    	}
+    	else
+    	{         
+		    $event=array(
+		    'event_title'=>$this->input->post('title'),
+		    'event_description'=>$this->input->post('event'),
+		    'event_location'=>$this->input->post('location'),
+		    'event_datetime'=>$this->input->post('date'),
+		    'event_price'=>$this->input->post('price'),
+		    );                         
+		    $this->Friend->add_event($event);
+		    redirect('all_events');
+    	}
+    }
+     public function all_events()
+  	{
+	    $all_data_ev['all_events']=$this->Friend->get_all_events();
+	    $this->load->view('friends/title_events', $all_data_ev );
+  	}
+   	public function get_event()
+  	{
+  		$event_id=$this->input->post('event_id');
+	    $the_data_ev['the_events']=$this->Friend->get_the_events($event_id);
+	    $this->load->view('friends/events', $the_data_ev );
+  	}
 
 }

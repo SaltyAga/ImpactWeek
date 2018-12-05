@@ -10,37 +10,19 @@
 </head>
 <body>
 	<div class="container">
-		<div class="row">
-			<p>Test info here</p>
-		</div>
-		<div class="row">
-			<?php 
-				foreach($users as $row) {
-				echo
-				"<div>
-					<img src='" . $row['picture_url'] . "' alt='profile_pic'> 
-				<div>" .
-				$row['first_name'] . " " .
-				$row['last_name'] . "</div>
-				<form action='friend_profile' method='post'>
-					<input type='hidden' name='profile_id' value='" . $row['user_id'] . "'>
-					<input type='submit' value='View profile'> 
+		<h2>Welcome to Female Friends Admin Page!</h2>
+		<h3><?= $this->session->userdata('welcome'); ?></h3>
+
+	<!-- ----------	Login form ----------------->		
+			<div class="col-xs-6" id="log">
+				<h3>Login</h3>
+				<form action="login_admin" method="post">
+					<input type="text" name="email_log" placeholder="email" value="<?php echo set_value('email_log'); ?>">
+					<?php echo $this->session->userdata('error_pass_log'); ?>
+					<input type="password" name="password_log" placeholder="password"">
+					<input type="submit" value="Login">
 				</form>
-				<form action='friend_request' method='post'>
-					<input type='hidden' name='request_id' value='" . $row['user_id'] . "'>
-					<input type='submit' value='Add friend'> 
-				</form>
-				";
-			}
-			?>
 		</div>
-
-
-
-
-
-
-
 	</div><!-- end of container div -->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 </body>

@@ -1,12 +1,16 @@
 
     <div class="post-container col-12 col-md-8 col-md-offset-4">
-        <form role="form" method="post" action="<?php echo base_url('add_post'); ?>">
+        <form role="form" method="post" action="add_post">
             <div class="form-group">
                 <input type="text" placeholder="The Title" name="title" class="form-control">
             </div>
             <div class="form-group">
                 <textarea type="text" placeholder="your post" name="posty" class="form-control"></textarea>
             </div>
+            <input type='radio' name='public_private' value=0>
+              <label>Public</label>
+            <input type='radio'name='public_private' value=1>
+              <label>Private</label>
             <input type="submit" value=" Add " class="btn btn-default" id="bt-add">
         </form>
     </div>
