@@ -8,11 +8,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/style4.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style4.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-fixed-top sticky" id="navbar">
-        <div class="nav-container">
+    <div class="nav-container">
             <div class="navbar-header">
                 <a href="#" class="navbar-brand" ><img src="/assets/logos/Logo_White.png" alt="logo" id="logo"></a>
                 <button class="navbar-toggle" data-toggle ="collapse" data-target =".navHeaderCollapse">
@@ -24,12 +24,9 @@
                     <li><a href="homepage">Home</a></li>
                     <li><a href="all_events">Events</a></li>
                     <li><a href="all_posts">Forum</a></li>
-                    <li><a href="members">Friends</a></li>
-                    <li><a href="profile">Profile</a></li>
                     <li><a href="contact">Contact</a></li> 
-                    <button class="btn" id="button"><a href="logout">Logout</a></button>
+                    <button class="btn btn-default" id="button"><a href="/"><span style="font-size: 15px;">Login/Register</span></a></button>
                 </ul>
             </div>
-        </div>    
+    </div>    
     </nav> 
-    

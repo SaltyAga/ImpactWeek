@@ -433,7 +433,7 @@ class Friend extends CI_Model {
 	    event_datetime,
 	    event_price
 	    from events
-	    ORDER BY created_at DESC 
+	    ORDER BY event_datetime ASC 
 	    ")->result_array();
   	}
    	public function get_the_events($id)

@@ -36,9 +36,11 @@
     
             </div>
             <div class="col-sm-9">
+                <div class='modal-body'>
                 <a href='profile' class="btn btn-info btn-sm" id="btn"><span class="glyphicon glyphicon-user"></span> My Profile</a>
                 <a href='my_friends' class="btn btn-info btn-sm" id="btn"><span class="glyphicon glyphicon-globe"></span> My Friends</a>
                 <a href='edit_profile'class="btn btn-info btn-sm" id="btn"><span class="glyphicon glyphicon-pencil"></span> Edit Profile</a>
+            </div>
                 <div class="info-container">
                     <div class='row'>
                         <div class='col-md-6'>

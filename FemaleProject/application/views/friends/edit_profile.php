@@ -11,18 +11,26 @@
 			<img class="fb-image-profile img-circle img-thumbnail" src="/assets/images/profile/default.jpg" alt="Profile image example"/>
 			<div class="row">
 				<div class="col-sm-3">
-					<?php echo " <h1>  " . $profile['first_name'] ." " . $profile['last_name'] . "</h1>"; ?>
+					<!--<?php //echo " <h1>  " . $profile['first_name'] ." " . $profile['last_name'] . "</h1>"; ?>
 					<br>
 					<div class="text-center">
 					<p>Upload a different photo...</p>
 					<input type="file" class="text-center center-block file-upload">
-					</div>
+					</div>-->
+
+					<!-- <?php //echo $error;?> -->
+
+					<?php echo form_open_multipart('friends/do_upload');?>
+					<input type="file" name="userfile" size="20" />
+					<br /><br />
+					<input type="submit" value="upload" />
+					</form>
 				</div>
 				<div class="col-sm-9">
 					<br>
-					<a href='profile' class="btn btn-info btn-sm" id="btn"><span class="glyphicon glyphicon-user"></span> My Profile</a>
-					<a href='my_friends' class="btn btn-info btn-sm" id="btn"><span class="glyphicon glyphicon-globe"></span> My Friends</a>
-					<a href='edit_profile'class="btn btn-info btn-sm" id="btn"><span class="glyphicon glyphicon-pencil"></span> Edit Profile</a>
+					<a href='profile' class="btn btn-info btn-sm" id="btn1"><span class="glyphicon glyphicon-user"></span> My Profile</a>
+					<a href='my_friends' class="btn btn-info btn-sm" id="btn1"><span class="glyphicon glyphicon-globe"></span> My Friends</a>
+					<a href='edit_profile'class="btn btn-info btn-sm" id="btn1"><span class="glyphicon glyphicon-pencil"></span> Edit Profile</a>
 				</div>
 		</div>
 		<div class="main-container">
@@ -135,9 +143,9 @@
 							<p><b>Role</b></p>";
 							if ($profile['mentor_mentee'] == 0 && $profile['mentor_mentee'] !== NULL)
 							{ echo 
-								"<input type='radio' class='form-control' checked name='mentor_mentee' value=0>
+								"<input type='radio' checked name='mentor_mentee' value=0>
 								<label>Mentor</label>
-								<input type='radio' class='form-control' name='mentor_mentee' value=1>
+								<input type='radio' name='mentor_mentee' value=1>
 								<label>Mentee</label>";
 							} else if ($profile['mentor_mentee']==1)
 							{
@@ -180,8 +188,8 @@
 						echo
 						"</div>
 
-						<input type='submit' value='Update' class='btn btn-info' id='btn'>
-						<input type='reset' value='Cancel' class='btn btn-default' id='btn'>
+						<input type='submit' value='Update' class='btn btn-info' id='btn1'>
+						<input type='reset' value='Cancel' class='btn btn-default' id='btn1'>
 						"
 						?>
                 </div>      

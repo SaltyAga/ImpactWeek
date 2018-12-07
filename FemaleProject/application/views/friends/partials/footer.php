@@ -1,4 +1,6 @@
-<footer>
+<link rel="stylesheet" type="text/css" href="assets/css/style2.css">
+    <div class="footer-container">
+    <footer>
         <div class="row">
             <div class="col-12 col-md-3">
                 <h5>CONTACT</h5>
@@ -15,10 +17,10 @@
             <div class="col-12 col-md-3">
                 <h5>SUBSCRIBE TO OUR NEWSLETTER</h5>
                 <hr>
-                <form class="form-group">
+                <form>
                 <p>Email *</p>
-                <p><input type="text" class="form-control"></p>
-                <p><input type="submit" value="Subscribe!" class="btn btn-primary"></p>
+                <p><input type="text" ></p>
+                <p><input type="submit" value="Subscribe!" ></p>
                 </form>
             </div>
             <div class="col-12 col-md-3">
@@ -29,5 +31,6 @@
             </div>
         </div>
     </footer>
+    </div>
 </body>
 </html>

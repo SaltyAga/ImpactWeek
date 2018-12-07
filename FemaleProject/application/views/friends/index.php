@@ -21,11 +21,10 @@
             </div>
             <div class="collapse navbar-collapse navHeaderCollapse">
                 <ul class="nav navbar-nav navbar-right">  
-                    <li><a href="">Home</a></li>
-                    <li><a href="">About</a></li>
-                    <li><a href="">Events</a></li>
-                    <li><a href="">Forum</a></li>
-                    <li><a href="">Contact</a></li> 
+                    <li><a href="homepage">Home</a></li>
+                    <li><a href="all_events">Events</a></li>
+                    <li><a href="all_posts">Forum</a></li>
+                    <li><a href="contact">Contact</a></li> 
                 </ul>
             </div>
     </div>    

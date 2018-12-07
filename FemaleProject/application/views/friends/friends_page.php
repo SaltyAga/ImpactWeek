@@ -14,34 +14,48 @@
             <h2>Members</h2>
         </div>
         <!---- SEARCH PANEL ---------->
+        <div class="form-container">
         <form action='members_search' method='post'>
-        	<label>First Name</label>
-        	<input type='text' name='first_name'>
-        	<label>Last Name</label>
-        	<input type="text" name="last_name">
-        	<label>City</label>
-        	<select name='city_id'>
-				<?php foreach ($cities as $row) {
-				echo
-				"<option value='" . $row['city_id'] . "'>" .$row['city_name'] . "</option>";
-				}; ?>
-			</select>
-			<label>Industry</label>
-        	<select name='industry_id'>
-				<?php foreach ($industries as $row) {
-				echo
-				"<option value='" . $row['industry_id'] . "'>" .$row['industry'] . "</option>";
-				}; ?>
-			</select>
-			<input type='radio' name='mentor_mentee' value=0>
-			<label>Mentor</label>
-			<input type='radio' name='mentor_mentee' value=1>
-			<label>Mentee</label>
-			<input type='submit' value='Search' class="btn btn-primary">
-		</form>
-		<form action='members' method='post'>
-			<input type='submit' value='Reset' class="btn btn-default">
-		</form>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <input type='text' name='first_name' placeholder="First Name" class="form-control">
+                </div>
+                <div class="col-sm-6">   
+                    <input type="text" name="last_name" placeholder="Last Name" class="form-control">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-5">
+                    <label style="color:grey;">Industry</label>
+                    <select style="width: 200px;" name='industry_id'>
+                    <?php foreach ($industries as $row) {
+                    echo
+                    "<option value='" . $row['industry_id'] . "'>" .$row['industry'] . "</option>";
+                    }; ?>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <label style="color:grey;">City</label>
+                    <select name='city_id'>
+                    <?php foreach ($cities as $row) {
+                    echo
+                    "<option value='" . $row['city_id'] . "'>" .$row['city_name'] . "</option>";
+                    }; ?>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    
+                    <label class="radio-inline"><input type='radio' name='mentor_mentee' value=0>Mentor</label>
+                    
+                    <label class="radio-inline"><input type='radio' name='mentor_mentee' value=1>Mentee</label>
+                </div>
+                <div class="col-sm-1">
+                    <input type='submit' value='Search' class="btn btn-info btn-xs">
+                </div>
+            </div>
+            
+        </form>
+        </div>
         <!---- END OF SEARCH PANEL ---------->
 
         <div class="row">
